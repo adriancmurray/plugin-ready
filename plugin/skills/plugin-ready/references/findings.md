@@ -45,6 +45,17 @@ Titles in quotes are the portal's wording. `check.mjs` ids are in brackets. Sour
 
 Click the chevron on a hold row: it expands to the exact files and fragments the scan matched, and a finding code. Fix what it names before guessing. The scan matches names, not meaning: identifiers like `key`, `token` or `secret` can read as credentials, and `{n,m}` inside a regex or template can read as text built at run time.
 
+Finding codes seen so far:
+
+| Code | Portal title |
+|---|---|
+| `MOD_ANSWERS_PERMISSION` | Mod takes, or can take, a permission decision out of the user's hands |
+| `MOD_DATA_LEAVES_BY_PROMPT` | Mod can read the conversation or other data and can also submit a prompt that can carry text out (any `$.fs.read` plus `$.prompt.submit`) |
+| `MCP_FORWARDS_CREDENTIAL_ENV` | Uses a credential from the user's machine (a "reads the key" part and a "sends data" part, read together across files) |
+| `UNKNOWN_KEY_CROSS_TOOL` | Field from another tool's manifest (`icon`; no action) |
+
+A regex quantifier like `{1,6}` is shown in findings as `$` (for example `^#{1,6}\s` appears as `^#$\s`): the scan treats braces as a run-time value. Use `+` or spell the alternatives out.
+
 ## Checker-only findings
 
 | id | Meaning | Fix |
