@@ -1,0 +1,5 @@
+#!/bin/sh
+claude plugin validate plugin --strict || exit 1
+claude plugin validate . --strict || exit 1
+node --test tests/*.spec.mjs || exit 1
+exec node plugin/skills/plugin-ready/scripts/check.mjs plugin --repo .

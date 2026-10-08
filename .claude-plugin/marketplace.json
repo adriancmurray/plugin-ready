@@ -1,0 +1,6 @@
+{
+  "name": "plugin-ready",
+  "owner": { "name": "Adrian Murray" },
+  "metadata": { "description": "plugin-ready: get a Claude Code plugin through the plugin directory's checks." },
+  "plugins": [{ "name": "plugin-ready", "source": "./plugin", "description": "Readiness check and fix workflow for plugin directory submission." }]
+}
