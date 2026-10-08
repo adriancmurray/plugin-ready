@@ -41,6 +41,10 @@ Titles in quotes are the portal's wording. `check.mjs` ids are in brackets. Sour
 | Field from another tool's manifest: `icon` | No action: Claude Code ignores `icon`; the directory reads it |
 | A mod hooks an event other calls pass through, or an event that is also a call name [shared-event, hook-readme] | One README line naming the event and what the hook does to it |
 
+## Reading a hold
+
+Click the chevron on a hold row: it expands to the exact files and fragments the scan matched, and a finding code. Fix what it names before guessing. The scan matches names, not meaning: identifiers like `key`, `token` or `secret` can read as credentials, and `{n,m}` inside a regex or template can read as text built at run time.
+
 ## Checker-only findings
 
 | id | Meaning | Fix |
@@ -56,6 +60,7 @@ Titles in quotes are the portal's wording. `check.mjs` ids are in brackets. Sour
 |---|---|---|
 | Hold: permission decision, at `hooks/register.ts` | `agent.spawn` hook set subagent models and refused Opus | Gate made off by default (`gate.enabled: false`). README says it does nothing until turned on, and never changes the permission mode |
 | Hold: credential, on plugin.json | A `stats` CLI read `~/.claude/projects`, an environment-variable path override, and a home-folder lookup for the log folder | All removed (logs moved to the system temp folder in 0.5.2). README states that no environment variables, keychain or `~/.claude` files are read |
+| Hold: credential, still present in 0.5.2 | The expanded finding (click the row's chevron; the code is `MCP_FORWARDS_CREDENTIAL_ENV`) named two false triggers it read together: a settings loop variable named `key` in `src/mod/config.ts` (read as "the installer's key"), and a regex `^#{1,6}\s` in `src/mod/guards.ts` (read as "a command assembled at run time") | Renamed the variable to `field`; rewrote the regex as `^#+\s` (0.5.3) |
 | Hold: permission decision, still present in 0.5.x | Default-off did not clear it: the scan is static | Kept and disclosed; a reviewer clears each version |
 | Hold: prompt submit (0.5.0) | Optional seam reminder sent with `$.prompt.submit` | README gives the prompt's exact text |
 | Warning: no marketplace description | marketplace.json had none | Added `metadata.description` |
