@@ -54,7 +54,7 @@ Finding codes seen so far:
 | `MCP_FORWARDS_CREDENTIAL_ENV` | Uses a credential from the user's machine (a "reads the key" part and a "sends data" part, read together across files) |
 | `UNKNOWN_KEY_CROSS_TOOL` | Field from another tool's manifest (`icon`; no action) |
 
-A regex quantifier like `{1,6}` is shown in findings as `$` (for example `^#{1,6}\s` appears as `^#$\s`): the scan treats braces as a run-time value. Use `+` or spell the alternatives out.
+A regex quantifier like `{1,6}` is shown in findings as `$` (for example `^#{1,6}\s` appears as `^#$\s`): the scan treats braces as a run-time value. Use `+` or spell the alternatives out. Other false triggers seen on HaiKrew: the word `pass` (in `bypass`, "pass offset and limit") read as a password, `export`/`env`/`set` in regexes or comments read as an environment dump, and any template literal (`${a}#${b}`, `line-${i}`) read as a command built at run time. The credential hold pairs one "reads" spot with one "sends" spot and names a new pair after each fix; once a reviewer must look anyway (another hold on the same version), stop after two rounds and leave it to the reviewer.
 
 ## Checker-only findings
 
