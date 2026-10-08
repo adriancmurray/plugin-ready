@@ -2,9 +2,18 @@
   "name": "plugin-ready",
   "version": "0.1.0",
   "description": "Gets a Claude Code plugin ready for Anthropic's plugin directory: a local readiness check plus a fix-and-recheck workflow for Blocks, policy holds, warnings and README disclosures.",
-  "author": { "name": "Adrian Murray" },
+  "author": {
+    "name": "Adrian Murray"
+  },
   "license": "MIT",
   "homepage": "https://github.com/adriancmurray/plugin-ready",
   "repository": "https://github.com/adriancmurray/plugin-ready",
-  "keywords": ["plugins", "directory", "marketplace", "submission", "checklist"]
+  "keywords": [
+    "plugins",
+    "directory",
+    "marketplace",
+    "submission",
+    "checklist"
+  ],
+  "icon": "./.claude-plugin/icon.png"
 }
