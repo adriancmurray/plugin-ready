@@ -28,7 +28,7 @@ const CRED_PATTERNS = [
   /Deno\.env/,
   new RegExp("home" + "dir\\("),
   /os\.path\.expanduser/,
-  /~\//,
+  /~\/\./, // a home dotfile; plain ~/ paths in help text are not credentials
   /\.claude\//,
   /\.aws\//,
   /\.ssh\//,
