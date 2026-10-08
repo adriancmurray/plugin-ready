@@ -317,11 +317,19 @@ function checkHooks(ctx, readme) {
       if (!events.has(m[1])) events.set(m[1], `${f}:${lineAt(text, m.index)}`);
     }
   }
+  for (const f of ctx.text) {
+    if (!HOOK_EXT.includes(path.extname(f)) || isSelf(ctx, f)) continue;
+    const idx = ctx.read(f).split("\n").findIndex((line) => line.includes("$.prompt" + ".submit"));
+    if (idx >= 0) {
+      ctx.add("HOLD", "prompt-submit", `${f}:${idx + 1}`, "mod can submit a prompt that may carry text out",
+        "say in README exactly what text the submitted prompt contains");
+    }
+  }
   for (const [ev, where] of events) {
     // HaiKrew 0.3.0: the portal held the agent.spawn rewrite, but only noted tool.call refusals.
     if (ev === "agent.spawn" || ev.startsWith("permission")) {
       ctx.add("HOLD", "permission-decision", where, `can rewrite or refuse ${ev}`,
-        "ship it off by default behind a setting and say so in README");
+        "only `return next(e)` clears it; otherwise keep it, disclose it in README, and expect a reviewer");
     } else if (ev === "tool.call") {
       ctx.add("NOTE", "shared-event", where, "hooks tool.call, which every tool call passes through",
         "say in README what the hook changes or refuses");

@@ -22,7 +22,8 @@ Titles in quotes are the portal's wording. `check.mjs` ids are in brackets. Sour
 | Portal title | Trigger | Fix |
 |---|---|---|
 | "Uses a credential from the user's machine" [credential] | Code that reads environment variables, the home folder, `~/.claude`, `~/.aws`, `~/.ssh`, the keychain or `.netrc`, especially if a value could leave the machine | Delete the read if it is not essential. Otherwise disclose what is read and that it is never sent |
-| "Mod takes, or can take, a permission decision out of the user's hands" [permission-decision] | A mod hook that refuses or rewrites a user's call (`agent.spawn`, `tool.call`, permission events) | Off by default behind a setting; the README says what the hook changes and that it never changes the permission mode |
+| "Mod takes, or can take, a permission decision out of the user's hands" [permission-decision] | A mod hook that refuses or rewrites a user's call (`agent.spawn`, `tool.call`, permission events) | Only passing the event on unchanged (`return next(e)`) clears it: the scan reads code, not settings, so a default-off setting does not. If the rewrite is the plugin's purpose, keep it: ship it off by default, say in the README what it changes and that it never changes the permission mode, and expect a reviewer to clear each version |
+| "Mod can read the conversation or other data and can also submit a prompt that can carry text out" [prompt-submit] | A mod that reads session data and calls `$.prompt.submit` | Remove the submit, or say in the README the exact text of the prompt and that it carries no conversation or file content |
 | "Files or downloads the validator couldn't inspect" [size, binary] | A file of 256 KiB or more, more than 512 files, or non-image binaries | Keep large or binary assets outside the plugin folder |
 | "Scripts the validator couldn't follow" | Generated, minified or dynamically built code | Ship readable source |
 | "MCP server command wasn't read", "Bundled MCP server not inspected" | An MCP command the scanner cannot open, or a .mcpb/.dxt bundle | Ship source, or disclose |
@@ -54,6 +55,8 @@ Titles in quotes are the portal's wording. `check.mjs` ids are in brackets. Sour
 | Finding | Cause | What was done |
 |---|---|---|
 | Hold: permission decision, at `hooks/register.ts` | `agent.spawn` hook set subagent models and refused Opus | Gate made off by default (`gate.enabled: false`). README says it does nothing until turned on, and never changes the permission mode |
-| Hold: credential, on plugin.json | A `stats` CLI read `~/.claude/projects`, plus an environment-variable path override | Both removed. README states that no environment variables, keychain or `~/.claude` files are read |
+| Hold: credential, on plugin.json | A `stats` CLI read `~/.claude/projects`, an environment-variable path override, and a home-folder lookup for the log folder | All removed (logs moved to the system temp folder in 0.5.2). README states that no environment variables, keychain or `~/.claude` files are read |
+| Hold: permission decision, still present in 0.5.x | Default-off did not clear it: the scan is static | Kept and disclosed; a reviewer clears each version |
+| Hold: prompt submit (0.5.0) | Optional seam reminder sent with `$.prompt.submit` | README gives the prompt's exact text |
 | Warning: no marketplace description | marketplace.json had none | Added `metadata.description` |
 | Notes: `agent.spawn`, `command.run` | Hooks on shared events | README lines name each hooked event and what it changes |
